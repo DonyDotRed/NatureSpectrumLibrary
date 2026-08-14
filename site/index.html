@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="NatureSpectrumLibrary — Energy-axis gamma nuclide library explorer">
+  <title>NatureSpectrumLibrary</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body>
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card" role="dialog" aria-labelledby="lockTitle">
+      <div class="brand-mark" aria-hidden="true">NSL</div>
+      <div>
+        <p class="eyebrow">ENERGY-AXIS NUCLIDE LIBRARY</p>
+        <h1 id="lockTitle">NatureSpectrumLibrary</h1>
+        <p class="muted">감마선 에너지에서 핵종·발생원·화학형태·시료·검출기를 역추적하는 연구용 라이브러리</p>
+      </div>
+      <form id="unlockForm" class="unlock-form">
+        <label for="passwordInput">Access password</label>
+        <div class="password-row">
+          <input id="passwordInput" type="password" autocomplete="current-password" spellcheck="false" required autofocus>
+          <button id="togglePassword" class="icon-button" type="button" aria-label="비밀번호 표시 전환">보기</button>
+        </div>
+        <button id="unlockButton" class="primary-button" type="submit">라이브러리 열기</button>
+        <p id="unlockStatus" class="status-text" aria-live="polite"></p>
+      </form>
+      <div class="security-note">
+        <strong>Encrypted static dataset</strong>
+        <span>원본 데이터는 AES-GCM 암호화 payload로 배포되며 비밀번호 입력 후 브라우저 메모리에서 복호화됩니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell" hidden>
+    <aside id="sidebar" class="sidebar" aria-label="주 메뉴">
+      <div class="sidebar-brand">
+        <div class="brand-mark small">NSL</div>
+        <div><strong>NatureSpectrumLibrary</strong><span>Research workspace</span></div>
+      </div>
+      <nav class="nav-list" id="navList">
+        <button data-view="overview" class="nav-item active"><span>01</span>Overview</button>
+        <button data-view="energy" class="nav-item"><span>02</span>Energy Finder</button>
+        <button data-view="nuclides" class="nav-item"><span>03</span>Nuclide Library</button>
+        <button data-view="detectors" class="nav-item"><span>04</span>Detector Lab</button>
+        <button data-view="bands" class="nav-item"><span>05</span>Energy Bands</button>
+        <button data-view="origins" class="nav-item"><span>06</span>Origins</button>
+        <button data-view="chemistry" class="nav-item"><span>07</span>Chemical Forms</button>
+        <button data-view="samples" class="nav-item"><span>08</span>Sample Matrix</button>
+        <button data-view="matrix" class="nav-item"><span>09</span>Integration Matrix</button>
+        <button data-view="halflife" class="nav-item"><span>10</span>Half-life Lab</button>
+        <button data-view="references" class="nav-item"><span>11</span>References</button>
+        <button data-view="workbook" class="nav-item"><span>12</span>Workbook Browser</button>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="lockButton" class="text-button">Lock session</button>
+        <span id="datasetStamp">Dataset loaded</span>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button id="menuButton" class="icon-button mobile-only" aria-label="메뉴 열기">Menu</button>
+        <div class="global-search-wrap">
+          <input id="globalSearch" type="search" placeholder="핵종, 에너지, 발생원, 시료 검색…" aria-label="전역 검색">
+          <kbd>Ctrl K</kbd>
+        </div>
+        <div class="topbar-actions">
+          <button id="themeButton" class="icon-button" aria-label="테마 전환">Theme</button>
+          <button id="helpButton" class="icon-button" aria-label="사용 도움말">Help</button>
+        </div>
+      </header>
+      <main id="main" class="main" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="detailDrawer" class="detail-drawer" aria-label="상세 정보" hidden>
+    <div class="drawer-head"><strong id="drawerTitle">Detail</strong><button id="drawerClose" class="icon-button">Close</button></div>
+    <div id="drawerBody" class="drawer-body"></div>
+  </aside>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>

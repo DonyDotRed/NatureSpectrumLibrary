@@ -1,0 +1,9 @@
+# Never commit plaintext source data
+*.raw.json
+data.raw.json
+*.xlsx
+*.xls
+.env
+.env.*
+.DS_Store
+__pycache__/

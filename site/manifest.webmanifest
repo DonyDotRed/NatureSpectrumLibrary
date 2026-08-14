@@ -1,0 +1,9 @@
+{
+  "name":"NatureSpectrumLibrary",
+  "short_name":"NSL",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#111719",
+  "theme_color":"#0f766e",
+  "description":"Energy-axis gamma nuclide library explorer"
+}
