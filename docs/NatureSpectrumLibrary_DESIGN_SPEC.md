@@ -1,6 +1,6 @@
 # NatureSpectrumLibrary — GitHub Pages 정적 웹서비스 상세 설계서
 
-**문서 버전:** 1.0.0  
+**문서 버전:** 1.3.0  
 **기준 데이터:** `에너지축_핵종라이브러리_Energy_Axis_Nuclide_Library.xlsx` (13 sheets)  
 **서비스명:** `NatureSpectrumLibrary`  
 **목표 배포:** GitHub Pages / 정적 HTML + CSS + JavaScript  
@@ -62,8 +62,11 @@ NatureSpectrumLibrary는 감마선 스펙트럼에서 관측된 에너지를 출
 8. **Sample Matrix** — 시료매질 교차
 9. **Integration Matrix** — 검출기 × 대역 × 발생원
 10. **Half-life Lab** — 2회 계측 기반 실효 반감기
-11. **References** — 46개 문헌
-12. **Workbook Browser** — 13개 시트 원본 보기
+11. **Decay Lab** — 다중 핵종 물리적 방사능 감쇄 비교·시각화
+
+**기본 축 규약(v1.3):** X축 = Time (d) · linear, Y축 = Activity (mCi) · linear. 사용자 선택으로 각 축 단위와 Linear/Log scale 및 축 교환을 지원한다.
+12. **References** — 46개 문헌
+13. **Workbook Browser** — 13개 시트 원본 보기
 
 ### 3.2 전역 상단 바
 
@@ -149,7 +152,40 @@ NatureSpectrumLibrary는 감마선 스펙트럼에서 관측된 에너지를 출
 - `N2 ≥ N1`이면 단순 방사성 붕괴 단독 가정에 맞지 않는다는 경고
 - 입력 단위는 시간/일 등 사용자가 정의하며 출력은 같은 단위
 
-### 4.5 Workbook Browser
+### 4.5 Decay Lab — 다중 핵종 방사능 감쇄 비교
+
+MASTER 시트의 반감기 문자열을 해석하여 여러 핵종의 물리적 방사성 붕괴를 동시에 선차트로 표시한다.
+
+기본 모델:
+
+`A(t) = A0 × 2^(-t/T1/2) = A0 × exp(-λt)`
+
+`λ = ln(2) / T1/2`
+
+기능:
+- 다중 핵종 검색·체크 선택 및 개별 곡선 표시/숨김
+- **Origin quick filter**: 원본 MASTER의 발생원 분류(핵분열 생성물, 중성자 활성화, 부식·마모 활성화(CRUD), 의료 이용, 산업 선원, 천연계열, NORM/TENORM 등)를 복수 선택
+- **Half-life quick filter**: `short(<1 d)`, `medium(1 d–<1 y)`, `long(≥1 y)` 세 구간을 복수 선택
+- 동일 필터 그룹 내 복수 항목은 OR, Origin 그룹과 Half-life 그룹 사이는 AND로 결합
+- 검색어는 Origin/Half-life 필터 결과에 추가 AND 조건으로 적용
+- `Select filtered`, `Clear filtered`, `Reset filters`로 다수 핵종을 빠르게 추가/제거하고 선택 상태와 필터 상태를 분리 관리
+- 각 핵종별 초기 방사능 `A0` 개별 입력
+- 기본 방사능 단위 `mCi`; `Bq`, `kBq`, `MBq`, `GBq`, `nCi`, `µCi`, `mCi`, `Ci` 변환
+- 기본 시간 단위 `d`; `s`, `min`, `h`, `d`, `wk`, `mo`, `y` 변환
+- 표준 기본 축 배치: **X = Time (d) · linear, Y = Activity (mCi) · linear**
+- 필요 시 **X = Activity, Y = Time**으로 즉시 축 교환 가능
+- X축과 Y축 각각 독립적으로 `Linear` / `Log` 선택
+- 절대 방사능 또는 `A/A0 (%)` 정규화 표시
+- 시간 시작/끝, 샘플링 포인트 수, 특정 시점 readout 설정
+- 선택 핵종 중 최단 반감기의 `8 × T1/2`로 시간 범위 자동 조정
+- 계산 시계열 CSV 내보내기
+- Light/Dark 테마와 동일한 SVG 기반 무의존성 차트
+
+주의:
+- 로그 시간축에서는 `t = 0`을 표시할 수 없으므로 첫 양의 시간부터 표시한다.
+- 현재 모델은 **물리적 단일 지수 붕괴**만 계산한다. 생물학적 제거, 지속 유입, 딸핵종 ingrowth, 분기붕괴/연쇄붕괴, 화학적 이동, 검출효율 변화는 별도 모델이 필요하다.
+
+### 4.6 Workbook Browser
 
 전문 화면에서 구조화하지 못한 설명문·주석·보조표까지 누락하지 않도록 모든 13개 시트를 원본 셀 행렬로 제공한다.
 
